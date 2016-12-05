@@ -1,6 +1,6 @@
 {
   "name": "cycle-websocket",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Brings websocket power to your Cycle.js app !",
   "main": "index.js",
   "scripts": {

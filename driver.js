@@ -14,9 +14,11 @@ if (!assert) {
 }
 
 function makeWSDriver(config) {
-  let server = new WebSocket.Server({
+  const server = new WebSocket.Server({
     port: config.port || 4242
   });
+
+  let isRunning = true;
 
   const handleMessage = (msg) => {
     server.clients.forEach(client => client.send(msg));
@@ -28,7 +30,10 @@ function makeWSDriver(config) {
       next: handleMessage,
       error: console.error,
       complete: () => {
-        server.close();
+        if (isRunning) {
+          server.close();
+          isRunning = false;
+        }
       }
     });
 
@@ -42,8 +47,11 @@ function makeWSDriver(config) {
         });
       },
       stop: () => {
-        server.close();
-      },
+        if (isRunning) {
+          server.close();
+          isRunning = false;
+        }
+      }
     });
   };
 };
